@@ -28,6 +28,7 @@ Notes:
 async def add_error(ctx, error):
     await ctx.send(error)
     await ctx.send('```reg add <bot mention> <owner mention>``` Need to replace a current token or change owner? Do ```reg add <bot mention> <owner mention> [current token]``` Admin and need to fix a mistake yourself? Do ```reg add <bot mention> <owner mention> --force```')
-    
 
-bot.run('MzU1MTAxMzU1NDgyMDIxODg5.DaapFg.d0Ygl-vmyc4Z2z0ChdYSz-b1jsg')
+
+with open('token') as f:
+    bot.run(f.read().strip())
