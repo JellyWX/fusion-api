@@ -2,6 +2,7 @@ from flask import request, url_for
 from flask_api import FlaskAPI, status, exceptions
 
 import sqlite3
+import sys
 
 app = FlaskAPI(__name__)
 
@@ -24,6 +25,12 @@ def update(idx):
 
         if request.method == 'POST':
 
+            token = dict(bot[0])['token']
+            try:
+                assert token == str(requests.data.get('token'))
+            except:
+                return '', status.HTTP_403_FORBIDDEN
+
             try:
                 members = int(request.data.get('members'))
             except:
@@ -39,4 +46,7 @@ def update(idx):
 
     return {'members' : members, 'guilds' : guilds}
 
-app.run(host='0.0.0.0', port=8080, threaded=True, ssl_context=('/etc/letsencrypt/live/jellywx.co.uk/fullchain.pem', '/etc/letsencrypt/live/jellywx.co.uk/privkey.pem'))
+if 'debug' in sys.argv:
+    app.run(debug=True)
+else:
+    app.run(host='0.0.0.0', port=443, threaded=True, ssl_context=('/etc/letsencrypt/live/jellywx.co.uk/fullchain.pem', '/etc/letsencrypt/live/jellywx.co.uk/privkey.pem'))
