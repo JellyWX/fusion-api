@@ -1,8 +1,6 @@
 from flask import request, url_for
 from flask_api import FlaskAPI, status, exceptions
 
-from OpenSSL import SSL
-
 import sqlite3
 
 app = FlaskAPI(__name__)
@@ -41,9 +39,4 @@ def update(idx):
 
     return {'members' : members, 'guilds' : guilds}
 
-context = SSL.Context(SSL.TLSv1_2_METHOD)
-context.use_privatekey_file('/etc/letsencrypt/live/jellywx.co.uk/privkey.pem')
-context.use_certificate_chain_file('/etc/letsencrypt/live/jellywx.co.uk/fullchain.pem')
-context.use_certificate_file('/etc/letsencrypt/live/jellywx.co.uk/cert.pem')
-
-app.run(host='0.0.0.0', port=8080, threaded=True, ssl_context=context)
+app.run(host='0.0.0.0', port=8080, threaded=True, ssl_context=('/etc/letsencrypt/live/jellywx.co.uk/fullchain.pem', '/etc/letsencrypt/live/jellywx.co.uk/privkey.pem'))
