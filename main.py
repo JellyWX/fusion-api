@@ -1,6 +1,8 @@
 from flask import request, url_for
 from flask_api import FlaskAPI, status, exceptions
 from flask_cors import CORS, cross_origin
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 import sqlite3
 import sys
@@ -12,6 +14,11 @@ app = FlaskAPI(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'application/json'
 app.config['SERVER_NAME'] = domain
+limiter = Limiter(
+    app,
+    key_func=get_remote_address,
+    default_limits=['10 per minute']
+)
 
 
 @app.route('/int:idx')
