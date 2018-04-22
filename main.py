@@ -5,13 +5,17 @@ from flask_cors import CORS, cross_origin
 import sqlite3
 import sys
 
+subdomain = 'api'
+domain = 'jellywx.co.uk'
+
 app = FlaskAPI(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'application/json'
-app.config['SERVER_NAME'] = 'jellywx.co.uk'
+app.config['SERVER_NAME'] = domain
+
 
 @app.route('/int:idx')
-@app.route('/<int:idx>/', methods=['GET', 'POST'], subdomain='api')
+@app.route('/<int:idx>/', methods=['GET', 'POST'], subdomain=subdomain)
 @cross_origin()
 def update(idx):
     with sqlite3.connect('API.db') as connection:
@@ -54,4 +58,4 @@ def update(idx):
 if 'debug' in sys.argv:
     app.run(debug=True)
 else:
-    app.run(host='jellywx.co.uk', port=443, threaded=True, ssl_context=('/etc/letsencrypt/live/api.jellywx.co.uk/fullchain.pem', '/etc/letsencrypt/live/api.jellywx.co.uk/privkey.pem'))
+    app.run(host=domain, port=443, threaded=True, ssl_context=('/etc/letsencrypt/live/{}.{}/fullchain.pem'.format(subdomain, domain), '/etc/letsencrypt/live/{}.{}/privkey.pem'.format(subdomain, domain)))
