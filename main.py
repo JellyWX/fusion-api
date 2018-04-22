@@ -30,7 +30,7 @@ def update(idx):
         if request.method == 'POST':
 
             token = dict(bot[0])['token']
-            print(token)
+
             if not token == str(request.data.get('token')):
                 return '', status.HTTP_403_FORBIDDEN
 
