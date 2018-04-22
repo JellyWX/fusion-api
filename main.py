@@ -26,9 +26,10 @@ def update(idx):
         if request.method == 'POST':
 
             token = dict(bot[0])['token']
+            print(token)
             try:
-                assert token == str(requests.data.get('token'))
-            except:
+                assert token == str(request.data.get('token'))
+            except AssertionError:
                 return '', status.HTTP_403_FORBIDDEN
 
             try:
