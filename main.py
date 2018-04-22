@@ -1,13 +1,17 @@
 from flask import request, url_for
 from flask_api import FlaskAPI, status, exceptions
+from flask_cors import CORS, cross_origin
 
 import sqlite3
 import sys
 
 app = FlaskAPI(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'application/json'
 
 @app.route('/<int:idx>')
 @app.route('/<int:idx>/', methods=['GET', 'POST'])
+@cross_origin()
 def update(idx):
     with sqlite3.connect('API.db') as connection:
 
