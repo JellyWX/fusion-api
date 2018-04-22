@@ -8,9 +8,10 @@ import sys
 app = FlaskAPI(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'application/json'
+app.config['SERVER_NAME'] = 'jellywx.co.uk'
 
-@app.route('/<int:idx>')
-@app.route('/<int:idx>/', methods=['GET', 'POST'])
+@app.route('/int:idx')
+@app.route('/<int:idx>/', methods=['GET', 'POST'], subdomain='api')
 @cross_origin()
 def update(idx):
     with sqlite3.connect('API.db') as connection:
@@ -22,6 +23,7 @@ def update(idx):
         bot = [x for x in cursor.fetchall()]
 
         if len(bot) != 1:
+            print('Failed lookup')
             return '', status.HTTP_404_NOT_FOUND
 
         members = dict(bot[0])['members']
@@ -52,4 +54,4 @@ def update(idx):
 if 'debug' in sys.argv:
     app.run(debug=True)
 else:
-    app.run(host='0.0.0.0', port=443, threaded=True, ssl_context=('/etc/letsencrypt/live/jellywx.co.uk/fullchain.pem', '/etc/letsencrypt/live/jellywx.co.uk/privkey.pem'))
+    app.run(host='jellywx.co.uk', port=443, threaded=True, ssl_context=('/etc/letsencrypt/live/api.jellywx.co.uk/fullchain.pem', '/etc/letsencrypt/live/api.jellywx.co.uk/privkey.pem'))
