@@ -27,9 +27,7 @@ def update(idx):
 
             token = dict(bot[0])['token']
             print(token)
-            try:
-                assert token == str(request.data.get('token'))
-            except AssertionError:
+            if not token == str(request.data.get('token')):
                 return '', status.HTTP_403_FORBIDDEN
 
             try:
