@@ -21,7 +21,7 @@ limiter = Limiter(
 )
 
 @app.route('/', methods=['GET'], subdomain=subdomain)
-@corss_origin()
+@cross_origin()
 def get_bots():
     with sqlite3.connect('API.db') as connection:
         
