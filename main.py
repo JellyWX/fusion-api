@@ -26,7 +26,6 @@ def get_bots():
     with sqlite3.connect('API.db') as connection:
         
         cursor = connection.cursor()
-        cursor.row_factory = sqlite3.Row
         
         cursor.execute('SELECT id FROM bots')
         return [x for x in cursor.fetchall()]
