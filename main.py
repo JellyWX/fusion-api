@@ -20,6 +20,15 @@ limiter = Limiter(
     default_limits=['10 per minute']
 )
 
+@app.route('/', methods=['GET'])
+def get_bots():
+    with sqlite3.connect('API.db') as connection:
+        
+        cursor = connection.cursor()
+        cursor.row_factory = sqlite3.Row
+        
+        cursor.execute('SELECT id FROM bots')
+        return [x for x in cursor.fetchall()]
 
 @app.route('/int:idx')
 @app.route('/<int:idx>/', methods=['GET', 'POST'], subdomain=subdomain)
@@ -45,7 +54,7 @@ def update(idx):
             token = dict(bot[0])['token']
 
             if not token == str(request.data.get('token')):
-                return '', status.HTTP_403_FORBIDDEN
+                return '', status.HTTP_401_UNAUTHORIZED
 
             try:
                 members = int(request.data.get('members'))
