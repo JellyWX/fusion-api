@@ -20,7 +20,8 @@ limiter = Limiter(
     default_limits=['10 per minute']
 )
 
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['GET'], subdomain=subdomain)
+@corss_origin()
 def get_bots():
     with sqlite3.connect('API.db') as connection:
         
@@ -30,6 +31,7 @@ def get_bots():
         cursor.execute('SELECT id FROM bots')
         return [x for x in cursor.fetchall()]
 
+    
 @app.route('/int:idx')
 @app.route('/<int:idx>/', methods=['GET', 'POST'], subdomain=subdomain)
 @cross_origin()
