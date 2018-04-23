@@ -28,7 +28,7 @@ def get_bots():
         cursor = connection.cursor()
         
         cursor.execute('SELECT id FROM bots')
-        return [x for x in cursor.fetchall()]
+        return [x[0] for x in cursor.fetchall()]
 
     
 @app.route('/int:idx')
