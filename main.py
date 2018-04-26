@@ -8,12 +8,13 @@ import sqlite3
 import sys
 
 subdomain = 'api'
-domain = 'jellywx.co.uk'
+domain = 'fusiondiscordbots.com'
 
 app = FlaskAPI(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'application/json'
 app.config['SERVER_NAME'] = domain
+
 limiter = Limiter(
     app,
     key_func=get_remote_address,
@@ -75,4 +76,4 @@ def update(idx):
 if 'debug' in sys.argv:
     app.run(debug=True)
 else:
-    app.run(host=domain, port=443, threaded=True, ssl_context=('/etc/letsencrypt/live/{}.{}/fullchain.pem'.format(subdomain, domain), '/etc/letsencrypt/live/{}.{}/privkey.pem'.format(subdomain, domain)))
+    app.run(host='0.0.0.0', port=443, threaded=True, ssl_context=('/etc/letsencrypt/live/{}.{}/fullchain.pem'.format(subdomain, domain), '/etc/letsencrypt/live/{}.{}/privkey.pem'.format(subdomain, domain)))
