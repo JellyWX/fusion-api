@@ -25,13 +25,13 @@ limiter = Limiter(
 @cross_origin()
 def get_bots():
     with sqlite3.connect('API.db') as connection:
-        
+
         cursor = connection.cursor()
-        
+
         cursor.execute('SELECT id FROM bots')
         return [x[0] for x in cursor.fetchall()]
 
-    
+
 @app.route('/int:idx')
 @app.route('/<int:idx>/', methods=['GET', 'POST'], subdomain=subdomain)
 @cross_origin()
@@ -73,7 +73,8 @@ def update(idx):
 
     return {'members' : members, 'guilds' : guilds}
 
-if 'debug' in sys.argv:
-    app.run(debug=True)
-else:
-    app.run(host='0.0.0.0', port=443, threaded=True, ssl_context=('/etc/letsencrypt/live/{}.{}/fullchain.pem'.format(subdomain, domain), '/etc/letsencrypt/live/{}.{}/privkey.pem'.format(subdomain, domain)))
+if __name__ == '__main__':
+    if 'debug' in sys.argv:
+        app.run(debug=True)
+    else:
+        app.run(host='0.0.0.0', port=443, threaded=True, ssl_context=('/etc/letsencrypt/live/{}.{}/fullchain.pem'.format(subdomain, domain), '/etc/letsencrypt/live/{}.{}/privkey.pem'.format(subdomain, domain)))
