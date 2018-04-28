@@ -21,11 +21,10 @@ limiter = Limiter(
     default_limits=['10 per minute']
 )
 
-@app.route('/', methods=['GET'], subdomain=subdomain)
+@app.route('/', methods=['GET'])
 @cross_origin()
 def get_bots():
-    with sqlite3.connect('API.db') as connection:
-
+    with sqlite3.connect('/var/www/fusion-api/API.db') as connection:
         cursor = connection.cursor()
 
         cursor.execute('SELECT id FROM bots')
@@ -33,11 +32,10 @@ def get_bots():
 
 
 @app.route('/int:idx')
-@app.route('/<int:idx>/', methods=['GET', 'POST'], subdomain=subdomain)
+@app.route('/<int:idx>/', methods=['GET', 'POST'])
 @cross_origin()
 def update(idx):
-    with sqlite3.connect('API.db') as connection:
-
+    with sqlite3.connect('/var/www/fusion-api/API.db') as connection:
         cursor = connection.cursor()
         cursor.row_factory = sqlite3.Row
 
