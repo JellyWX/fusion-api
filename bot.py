@@ -79,7 +79,7 @@ async def search():
             for member in channel.guild.members:
                 if member in users and role not in member.roles:
                     await member.add_roles(role)
-                elif role in member.roles:
+                elif member not in users and role in member.roles:
                     await member.remove_roles(role)
                 else:
                     continue
