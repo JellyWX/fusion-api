@@ -2,6 +2,7 @@ import discord
 from make_bot import make_bot
 from discord.ext import commands
 import asyncio
+import sys
 
 bot = commands.Bot(command_prefix='reg ')
 bot.remove_command('help')
@@ -88,4 +89,11 @@ async def search():
 bot.loop.create_task(search())
 
 with open('token', 'r') as f:
-    bot.run(f.read().strip())
+    try:
+        bot.run(f.read().strip())
+    except Exception as e:
+        print('Error detected. Restarting in 15 seconds.')
+        print(sys.exc_info()[0])
+        time.sleep(15)
+
+        os.execl(sys.executable, sys.executable, *sys.argv)
